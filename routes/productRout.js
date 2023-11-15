@@ -1,0 +1,18 @@
+const express = require('express')
+const router = express.Router()
+const { createProduct, getProduct, getAllProduct, updateProduct, deleteProduct, addToWishlist, rating } = require('../controllers/product')
+const { verifyToken, authRole } = require('../middlewares/auth')
+const User2 = require('../models/userModel')
+const { uploadPhoto, productImgResize } = require('../middlewares/uploadImages')
+const { uploadImages } = require('../controllers/product')
+
+router.route('/create').post(createProduct)
+router.route('/upload/:id').put(verifyToken, uploadPhoto.array("images", 10), productImgResize, uploadImages)
+router.route('/getProduct/:id').get(getProduct)
+router.route('/updateProduct/:id').patch(authRole, updateProduct)
+router.route('/deleteProduct/:id').delete(authRole, deleteProduct)
+router.route('/getAllProduct').get(getAllProduct)
+router.route('/rating').put(verifyToken, rating)
+router.route('/wishlist').put(verifyToken, addToWishlist)
+router.route('/isAdmin').get(authRole)
+module.exports = router
