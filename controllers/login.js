@@ -129,7 +129,7 @@ const logout = async (req, res) => {
     }
     const refreshToken = cookie.refreshToken
     const user = await User2.findOne({ refreshToken })
-    if (!user) { // حاحتياط اذا كان تخزين كوكيز تجنب لحدوث مشاكل غير متوقعة
+    if (!user) {
         res.clearCookie("refreshToken")
         return res.status(200)
     } else {
